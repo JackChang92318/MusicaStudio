@@ -5,35 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI_v1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="524" Width="876">
-    <Grid ShowGridLines="True">
+        Title="MusicA StudIo" Height="524" Width="876">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*" />
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" ShowGridLines="True">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" ShowGridLines="True">
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <Grid Name="process" Grid.Row="0"/>
-                <Grid x:Name="piano_row" Grid.Row="1" ShowGridLines="True">
+                <Grid Name="process" Grid.Row="0">
+                    <Button Height="30" Width="30" Click="PlayMusic" Margin="56,6,541,6" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Padding="0">
+                        <Button.Content>
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M0,0 L24,12 L0,24 Z" Fill="#70FF70"/>
+                            </Canvas>
+                        </Button.Content>
+                    </Button>
+                    <Button Height="30" Width="30" Click="Stop" Margin="197,6,400,6" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Padding="0">
+                        <Button.Content>
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M0,0 H10 V24 H0 Z M14,0 H24 V24 H14 Z" Fill="#FF7070"/>
+                            </Canvas>
+                        </Button.Content>
+                    </Button>
+
+                    <Grid>
+                        <TextBox x:Name="Bpm" Height="20" Width="120" VerticalAlignment="Center" HorizontalAlignment="Left"
+                            Margin="395,0,0,0" Text="100 BPM" TextChanged="Bpm_TextChanged" />
+                    </Grid>
+
+                    <Grid>
+                        <TextBox x:Name="StartTime" Height="20" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left"
+                            Margin="530,0,0,0" Text="1 小節" TextChanged="StartTime_Change" />
+                    </Grid>
+                </Grid>
+                <Grid x:Name="piano_row" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="36*" />
                         <ColumnDefinition Width="1.5*" />
                     </Grid.ColumnDefinitions>
                     <Grid x:Name="keyContainer"  Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                     </Grid>
-                    <Grid x:Name="octaveBtn" Grid.Column="1" ShowGridLines="True">
+                    <Grid x:Name="octaveBtn" Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -43,8 +68,8 @@
 
                 <Grid x:Name="source" Grid.Row="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="36*" />
-                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="24*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <ScrollViewer Name="sourceScroll"  Grid.Column="0" >
                         <Grid x:Name="sourceContainer"/>
@@ -57,20 +82,61 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid Grid.Column="1">
-                <Canvas x:Name="control" />
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Bass" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
+                <Slider x:Name="BassSlider" Minimum="-10" Maximum="10" Value="0" Width="180" 
+                        VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" ValueChanged="BassSlider_ValueChanged"/>
+
+                <TextBlock Text="Mid" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" Grid.Row="1"/>
+                <Slider x:Name="MidSlider" Minimum="-10" Maximum="10" Value="0" Width="180" 
+                        VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" ValueChanged="MidSlider_ValueChanged"/>
+
+                <TextBlock Text="High" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" Grid.Row="2"/>
+                <Slider x:Name="TrebleSlider" Minimum="-10" Maximum="10" Value="0" Width="180" 
+                        VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" ValueChanged="TrebleSlider_ValueChanged"/>
             </Grid>
+
         </Grid>
-        <Grid x:Name="tracks" Grid.Row="1" ShowGridLines="True">
+        <Grid x:Name="tracks" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="15*" />
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1.6*" />
+                <ColumnDefinition Width="70*" />
+                <ColumnDefinition Width="10*" />
             </Grid.ColumnDefinitions>
-            <ScrollViewer Name="trackContainerScroll"  Grid.Column="0">
+
+            <ScrollViewer Name="trackSwitchScroll" Grid.Column="0" Grid.Row="1" ><!--Grid.Row="1"-->
+                <Grid x:Name="trackSwitch"/>
+            </ScrollViewer>
+
+            <ScrollViewer Name="trackContainerScroll" VirtualizingPanel.IsVirtualizing="True" Grid.Column="1" Grid.Row="1" >
+                <!--Grid.Row="1"-->
                 <Grid x:Name="trackContainer"/>
             </ScrollViewer>
-            <ScrollViewer Name="trackControllerScroll"  Grid.Column="1">
+
+            <ScrollViewer Name="trackControllerScroll" Grid.Column="2" Grid.Row="1" 
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <!--Grid.Row="1"-->
                 <Grid x:Name="trackController"/>
+            </ScrollViewer>
+
+            <ScrollViewer Name="MeasureHeaderScroll" VirtualizingPanel.IsVirtualizing="True" Grid.Row="0" Grid.Column="1" 
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <Grid x:Name="MeasureHeader"/>
             </ScrollViewer>
         </Grid>
     </Grid>
